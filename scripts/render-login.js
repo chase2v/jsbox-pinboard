@@ -1,7 +1,7 @@
 const renderAllPins = require('./render-all-pins')
 const renderAddPin = require('./render-add-pin.js')
 
-function renderPageLogin() {
+function renderPageLogin(isShare) {
   $ui.push({
     props: {
       "id" : "main"
@@ -55,8 +55,8 @@ function renderPageLogin() {
         },
         "events" : {
           "tapped" : function(sender) {
-            if (mode === 'share') {
-              renderAddPin(username, password, $context.link);
+            if (isShare()) {
+              renderAddPin(username, password);
             } else {
               renderAllPins(username, password);
             }
