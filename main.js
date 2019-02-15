@@ -1,1 +1,3 @@
-require('./scripts/app.js')
+const app = require('./scripts/app.js')
+
+app.launch()

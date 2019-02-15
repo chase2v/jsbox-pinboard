@@ -1,11 +1,26 @@
 require('./render-welcome.js')
 const renderAllPins = require('./render-all-pins.js')
+const renderAddPin = require('./render-add-pin.js')
+const renderPageLogin = require('./render-login.js')
 
-var username = $cache.get('username') || ''
-var password = $cache.get('password') || ''
+const username = $cache.get('username') || ''
+const password = $cache.get('password') || ''
 
-if (username && password) {
-  renderAllPins(username, password)
-} else {
-  require('./render-login.js')
+function launch() {
+  const safari = $safari.items || {};
+  const mode = safari && safari.location ? 'share' : 'normal'
+
+  if (username && password) {
+    if (mode === 'share') {
+      renderAddPin(username, password, safari.location.href, safari.title)
+    } else {
+      renderAllPins(username, password)
+    }
+  } else {
+    renderPageLogin(mode)
+  }
+}
+
+module.exports = {
+  launch
 }
