@@ -1,34 +1,11 @@
-function sayHello(username, password) {
-  // $ui.alert($l10n('HELLO_WORLD'));
-  console.log(username, password)
-  $http.get({
-    url: 'https://' + username + ':' + password + '@api.pinboard.in/v1/posts/all?format=json',
-    handler: function(resp) {
-      var data = resp.data
-      console.log(data)
+require('./render-welcome.js')
+const renderAllPins = require('./render-all-pins.js')
 
-      data = data.map(item => {
-        return item.description
-      })
+var username = $cache.get('username') || ''
+var password = $cache.get('password') || ''
 
-      $ui.push({
-        views: [
-          {
-            type: 'list',
-            props: {
-              data
-            },
-            layout: function(make, view) {
-              make.width.equalTo(view.super.width)
-              make.height.equalTo(view.super.height)
-            },
-          }
-        ],
-      })
-    }
-  })
-}
-
-module.exports = {
-  sayHello: sayHello
+if (username && password) {
+  renderAllPins(username, password)
+} else {
+  require('./render-login.js')
 }
