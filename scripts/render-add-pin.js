@@ -32,16 +32,16 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
         radius: 0,
         font: $font(16)
       },
-      layout: function(make, view) {
+      layout(make, view) {
         make.top.equalTo(view.prev.bottom)
         make.width.equalTo(view.super)
         make.height.equalTo(40)
       },
       events: {
-        changed: function(sender) {
+        changed(sender) {
           url = sender.text
         },
-        returned: function(sender) {
+        returned(sender) {
           sender.blur()
         }
       },
@@ -79,16 +79,16 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
         bgcolor: $color('clear'),
         radius: 0
       },
-      layout: function(make, view) {
+      layout(make, view) {
         make.top.equalTo(view.prev.bottom)
         make.width.equalTo(view.super)
         make.height.equalTo(40)
       },
       events: {
-        changed: function(sender) {
+        changed(sender) {
           title = sender.text
         },
-        returned: function(sender) {
+        returned(sender) {
           sender.blur()
         },
       },
@@ -124,7 +124,7 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
       type: 'text',
       props: {
         id: 'descriptionText',
-        placeholder: 'Required',
+        placeholder: 'Optional',
         text: description,
         bgcolor: $color('clear'),
         radius: 3,
@@ -157,16 +157,16 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
           ]
         }
       },
-      layout: function(make, view) {
+      layout(make, view) {
         make.top.equalTo(view.prev.bottom).offset(10)
         make.width.equalTo(view.super)
         make.height.equalTo(120)
       },
       events: {
-        changed: function(sender) {
+        changed(sender) {
           description = sender.text
         },
-        returned: function(sender) {
+        returned(sender) {
           sender.blur()
         },
       },
@@ -176,7 +176,7 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
     {
       type: 'label',
       props: {
-        text: 'tags:',
+        text: 'Tags:',
         font: $font(20)
       },
       layout(make, view) {
@@ -187,21 +187,21 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
     {
       type: 'input',
       props: {
-        placeholder: 'Required',
+        placeholder: 'Optional',
         text: tags,
         bgcolor: $color('clear'),
         radius: 0
       },
-      layout: function(make, view) {
+      layout(make, view) {
         make.top.equalTo(view.prev.bottom)
         make.width.equalTo(view.super)
         make.height.equalTo(40)
       },
       events: {
-        changed: function(sender) {
+        changed(sender) {
           tags = sender.text
         },
-        returned: function(sender) {
+        returned(sender) {
           sender.blur()
         },
       },
@@ -233,10 +233,10 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
         {
           type: 'label',
           props: {
-            text: 'private',
+            text: 'Private',
             align: $align.center
           },
-          layout: function(make, view) {
+          layout(make, view) {
             make.left.equalTo(view.super)
           }
         },
@@ -245,7 +245,7 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
           props: {
             on: private
           },
-          layout: function(make, view) {
+          layout(make, view) {
             make.right.inset(0)
           },
           events: {
@@ -269,10 +269,10 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
         {
           type: 'label',
           props: {
-            text: 'read later',
+            text: 'Read later',
             align: $align.center
           },
-          layout: function(make, view) {
+          layout(make, view) {
             make.left.equalTo(view.super)
           }
         },
@@ -281,7 +281,7 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
           props: {
             on: readLater
           },
-          layout: function(make, view) {
+          layout(make, view) {
             make.right.equalTo(view.super)
           },
           events: {
@@ -310,7 +310,6 @@ function renderAddPin(username, password) {
   
   $ui.push({
     props: {
-      id: 'main',
       navBarHidden: true,
       statusBarStyle: 0,
     },
@@ -319,74 +318,21 @@ function renderAddPin(username, password) {
       {
         type: 'view',
         props: {
-          id: 'content',
           bgcolor: $color('clear'),
           clipsToBounds: true,
         },
-        layout: function(make, view) {
+        layout(make, view) {
           make.left.right.inset(0)
           make.bottom.inset(0)
           make.top.inset(0)
         },
         views: [
           {
-            type: 'view',
-            props: {
-              id: 'navView',
-            },
-            layout: $layout.fill,
-            views: [
-              {
-                type: 'view',
-                props: {
-                  bgcolor: $color('white'),
-                },
-                layout: function(make, view) {
-                  make.left.top.right.inset(0)
-                  if($device.info.version >= '11'){
-                    make.bottom.equalTo(view.super.topMargin).offset(40)
-                  } else {
-                    make.height.equalTo(65)
-                  }
-                },
-                // views:[
-                //   {
-                //     type: 'view',
-                //     layout: function(make, view) {
-                //       make.left.bottom.right.inset(0)
-                //       make.height.equalTo(45)
-                //     },
-                //     views: [
-                //       {
-                //         type: 'button',
-                //         props: {
-                //           id: 'deleteLocalButton',
-                //           title: '取消',
-                //           font: $font(17),
-                //           bgcolor: $color('clear'),
-                //           titleColor: $color('black'),
-                //           info: false,
-                //         },
-                //         layout: function(make, view) {
-                //           make.left.inset(10)
-                //           make.width.equalTo(50)
-                //           make.centerY.equalTo(view.super)
-                //           make.height.equalTo(35)
-                //         },
-                //       }
-                //     ]
-                //   }
-                // ],
-              }
-            ]
-          },
-          {
             type: 'list',
             layout(make, view) {
               make.left.right.bottom.inset(0)
               if($device.info.version >= '11'){
                 make.top.equalTo(view.super.topMargin)
-                // make.top.equalTo(view.super.topMargin).offset(45)
               } else {
                 make.top.equalTo(65)
               }
@@ -396,17 +342,20 @@ function renderAddPin(username, password) {
               separatorHidden: true,
               bgcolor: $color('clear'),
               header: {
+                type: 'view',
+                props: {
+                  height: 45,
+                },
                 views: [
                   {
                     type: 'label',
                     props: {
-                      height: 45,
                       id: 'localListHeaderTitle',
                       text: 'Add Bookmark',
                       font: $font('Avenir-Black', 35),
                       textColor: $color('black'),
                     },
-                    layout: function(make, view) {
+                    layout(make, view) {
                       make.left.inset(15)
                       make.top.equalTo(0)
                       make.height.equalTo(45)
@@ -415,19 +364,24 @@ function renderAddPin(username, password) {
                 ]
               },
               footer: {
+                type: 'view',
+                props: {
+                  height: 50
+                },
                 views: [
                   {
-                    'type' : 'button',
-                    'props' : {
-                      'title' : 'Add',
+                    type: 'button',
+                    props: {
+                      title: 'Save',
+                      font: $font('bold', 20)
                     },
-                    layout: function(make, view) {
+                    layout(make, view) {
                       make.left.right.inset(15)
                       make.bottom.inset(30)
                       make.height.equalTo(50)
                     },
-                    'events' : {
-                      'tapped' : function(sender) {
+                    events: {
+                      tapped(sender) {
                         Pinboard.addPin(username, password, {
                           url,
                           description: title,
@@ -442,6 +396,26 @@ function renderAddPin(username, password) {
                             message: res.result_code,
                           })
                         })
+                      }
+                    }
+                  },
+                  {
+                    type: 'button',
+                    props: {
+                      title: 'Cancel',
+                      titleColor: $color('#bbb'),
+                      bgcolor: $color('clear'),
+                      font: $font(14)
+                    },
+                    layout(make, view) {
+                      make.top.equalTo(view.prev.bottom).offset(10)
+                      make.centerX.equalTo(view.super)
+                      make.height.equalTo(40)
+                      make.width.equalTo(100)
+                    },
+                    events: {
+                      tapped() {
+                        $context.close()
                       }
                     }
                   }
