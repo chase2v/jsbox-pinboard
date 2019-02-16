@@ -1,32 +1,35 @@
-const { saveUserInfo } = require('./user')
-
-function getAllPins(username, password, cb) {
+function getAllPins({ tag = '' }, cb) {
+  const token = $cache.get('token') || ''
   $http.get({
-    url: 'https://' + username + ':' + password + '@api.pinboard.in/v1/posts/all?format=json',
-    handler: function(resp) {
-      saveUserInfo(username, password)
-      
-      var data = resp.data
-      cb && cb(data)
+    url: `https://api.pinboard.in/v1/posts/all?auth_token=${token}&format=json&tag=${tag}`,
+    handler(res) {
+      if (Array.isArray(res.data)) {
+        const data = res.data
+        cb && cb(data)
+      } else {
+        $ui.alert({
+          title: 'Error',
+          message: res.data || res.response.statusCode,
+        });
+      }
     }
   })
 }
 
-function addPin(username, password, data, cb) {
+function addPin(data, cb) {
+  const token = $cache.get('token') || ''
   data = Object.keys(data).map(key => {
     if (!data[key]) return ''
 
     return `&${key}=${$text.URLEncode(data[key])}`
   }).join('')
-  const url = 'https://' + username + ':' + password + '@api.pinboard.in/v1/posts/add?format=json'
-  + data
-
+  
+  const url = `https://api.pinboard.in/v1/posts/add?auth_token=${token}&format=json${data}`
+  
   $http.get({
     url,
-    handler: function(resp) {
-      saveUserInfo(username, password)
-
-      var data = resp.data
+    handler(res) {
+      const data = res.data
       cb && cb(data)
     }
   })

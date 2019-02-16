@@ -8,11 +8,12 @@ let tags = ''
 let private = true
 let readLater = false
 
-function getFormView(username, password, urlFromSafari, titleFromSafari) {
+function getFormView(urlFromSafari, titleFromSafari) {
   url = urlFromSafari
   title = titleFromSafari
   
   return [
+    // url
     {
       type: 'label',
       props: {
@@ -26,7 +27,7 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
     {
       type: 'input',
       props: {
-        placeholder: 'Required',
+        placeholder: 'Required, must starts with http/https',
         text: url,
         bgcolor: $color('clear'),
         radius: 0,
@@ -60,6 +61,8 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
         }
       ]
     },
+
+    // title
     {
       type: 'label',
       props: {
@@ -131,31 +134,6 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
         borderWidth: 1,
         borderColor: $color('#ccc'),
         type: $kbType.ascii,
-        accessoryView: {
-          type: "view",
-          props: {
-            height: 44
-          },
-          views: [
-            {
-              type: 'button',
-              props: {
-                title: '收起',
-                titleColor: $color('black'),
-                bgcolor: $color('clear')
-              },
-              layout(make) {
-                make.right.equalTo(0)
-                make.size.equalTo($size(50, 44))
-              },
-              events: {
-                tapped(sender) {
-                  $('descriptionText').blur()
-                }
-              }
-            }
-          ]
-        }
       },
       layout(make, view) {
         make.top.equalTo(view.prev.bottom).offset(10)
@@ -295,11 +273,10 @@ function getFormView(username, password, urlFromSafari, titleFromSafari) {
   ]
 }
 
-function renderAddPin(username, password) {
-  const {
-    url = '',
-    title = '',
-  } = getSharedInfo()
+function renderAddPin() {
+  const shareInfo = getSharedInfo()
+  url = shareInfo.url
+  title = shareInfo.title
   if (isShare() && !isUrlValid(url)) {
     $ui.alert({
       title: 'Error',
@@ -338,7 +315,7 @@ function renderAddPin(username, password) {
               }
             },
             props: {
-              rowHeight: 554,
+              rowHeight: 525,
               separatorHidden: true,
               bgcolor: $color('clear'),
               header: {
@@ -366,7 +343,7 @@ function renderAddPin(username, password) {
               footer: {
                 type: 'view',
                 props: {
-                  height: 50
+                  height: 90
                 },
                 views: [
                   {
@@ -377,12 +354,11 @@ function renderAddPin(username, password) {
                     },
                     layout(make, view) {
                       make.left.right.inset(15)
-                      make.bottom.inset(30)
                       make.height.equalTo(50)
                     },
                     events: {
-                      tapped(sender) {
-                        Pinboard.addPin(username, password, {
+                      tapped() {
+                        Pinboard.addPin({
                           url,
                           description: title,
                           extended: description,
@@ -390,7 +366,11 @@ function renderAddPin(username, password) {
                           shared: private ? 'no' : 'yes',
                           toread: readLater ? 'yes' : 'no',
                         }, (res) => {
-                          if (res.result_code === 'done') $context.close()
+                          if (res.result_code === 'done') {
+                            $ui.toast('Sucess!', 1.5)
+                            if (isShare()) return $context.close()
+                            return $ui.pop()
+                          }
                           $ui.alert({
                             title: 'Error',
                             message: res.result_code,
@@ -415,7 +395,7 @@ function renderAddPin(username, password) {
                     },
                     events: {
                       tapped() {
-                        $context.close()
+                        isShare() ? $context.close() : $ui.pop()
                       }
                     }
                   }
@@ -433,7 +413,7 @@ function renderAddPin(username, password) {
                         make.left.right.inset(15)
                         make.bottom.equalTo(view.views[view.views.lenght - 1])
                       },
-                      views: getFormView(username, password, url, title)
+                      views: getFormView(url, title)
                     }
                   ]
                 },

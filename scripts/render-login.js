@@ -1,4 +1,5 @@
 const renderAddPin = require('./render-add-pin.js')
+const { saveUserInfo } = require('./user')
 
 let token = $cache.get('token') || ''
 
@@ -121,8 +122,7 @@ function renderPageLogin(isShare) {
                 },
                 events: {
                   tapped(sender) {
-                    $cache.set('token', token)
-                    $cache.set('username', token.split(':')[0] || '')
+                    saveUserInfo(token)
 
                     $app.notify({
                       name: 'showActions',

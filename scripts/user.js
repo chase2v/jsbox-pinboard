@@ -1,6 +1,6 @@
-function saveUserInfo(username, password) {
-  $cache.set('username', username)
-  $cache.set('password', password)
+function saveUserInfo(token = '') {
+  $cache.set('token', token)
+  $cache.set('username', token.split(':')[0] || '')
 }
 
 module.exports = {
