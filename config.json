@@ -1,10 +1,10 @@
 {
   "info": {
-    "name": "",
-    "url": "",
-    "version": "1.0.0",
-    "author": "",
-    "website": "",
+    "name": "JSBox Pinboard",
+    "url": "https://github.com/VVangChen/jsbox-pinboard",
+    "version": "1.0",
+    "author": "VVangChen",
+    "website": "https://github.com/VVangChen/jsbox-pinboard",
     "types": 0
   },
   "settings": {
